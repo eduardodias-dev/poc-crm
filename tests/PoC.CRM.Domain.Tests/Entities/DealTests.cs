@@ -54,13 +54,14 @@ public class DealTests
     public void Deal_WhenCreated_MustBeAtProspectStage()
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 100m);
-        Assert.That(deal.Stage, Is.EqualTo(DealStage.Prospect));
+        Assert.That(deal.Stage, Is.EqualTo(DealStage.NotInitiated));
     }
 
     [Test]
     public void Deal_WhenWinningDealWithoutClosingDate_MustThrowException()
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 100m);
+        deal.MoveStage(DealStage.Proposal);
         Assert.That(() => deal.WinDeal(), Throws.InvalidOperationException.With.Message.EqualTo("Closing date must be set before marking the deal as Won."));
     }
 
@@ -69,6 +70,7 @@ public class DealTests
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 0);
         deal.SetClosingDate(DateTime.Today.AddDays(1));
+        deal.MoveStage(DealStage.Proposal);
         Assert.That(() => deal.WinDeal(), Throws.InvalidOperationException.With.Message.EqualTo("Amount must be greater than zero to mark the deal as Won."));
     }
 
@@ -77,6 +79,7 @@ public class DealTests
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 100m);
         deal.SetClosingDate(DateTime.Today.AddDays(1));
+        deal.MoveStage(DealStage.Prospect);
         deal.WinDeal();
         Assert.That(deal.Stage, Is.EqualTo(DealStage.Won));
     }
@@ -86,8 +89,9 @@ public class DealTests
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 100m);
         deal.SetClosingDate(DateTime.Today.AddDays(1));
+        deal.MoveStage(DealStage.Prospect);
         deal.WinDeal();
-        Assert.That(() => deal.WinDeal(), Throws.InvalidOperationException.With.Message.EqualTo("Only deals in Prospect stage can be marked as Won."));
+        Assert.That(() => deal.WinDeal(), Throws.InvalidOperationException.With.Message.EqualTo("Only deals in Prospect or Proposal stages can be marked as Won."));
     }
 
     [Test]
@@ -95,6 +99,7 @@ public class DealTests
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 100m);
         deal.SetClosingDate(DateTime.Today.AddDays(1));
+        deal.MoveStage(DealStage.Prospect);
         deal.WinDeal();
         Assert.That(() => deal.LoseDeal("Lost to competitor"), Throws.InvalidOperationException.With.Message.EqualTo("Only deals in Prospect stage can be marked as Lost."));
     }
@@ -103,6 +108,7 @@ public class DealTests
     public void Deal_WhenLosingDealAtProspectStageWithoutReason_MustThrowException()
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 100m);
+        deal.MoveStage(DealStage.Prospect);
         Assert.That(() => deal.LoseDeal(""), Throws.ArgumentException.With.Message.EqualTo("Reason for losing the deal must be provided. (Parameter 'reason')"));
     }
 
@@ -110,6 +116,7 @@ public class DealTests
     public void Deal_WhenLosingDealAtProspectStageWithNullReason_MustThrowException()
     {
         var deal = new Deal(1, "Valid Company", "Great Deal", 100m);
+        deal.MoveStage(DealStage.Prospect);
         Assert.That(() => deal.LoseDeal(null!), Throws.ArgumentException.With.Message.EqualTo("Reason for losing the deal must be provided. (Parameter 'reason')"));
     }
 }

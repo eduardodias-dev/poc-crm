@@ -23,7 +23,7 @@ public class Deal : IActivityObject
         Title = title;
         Amount = amount;
 
-        Stage = DealStage.Prospect;
+        Stage = DealStage.NotInitiated;
     }
 
     public void SetClosingDate(DateTime date, DateTime today = default){
@@ -36,8 +36,8 @@ public class Deal : IActivityObject
 
     public void WinDeal()
     {
-        if (Stage != DealStage.Prospect)
-            throw new InvalidOperationException("Only deals in Prospect stage can be marked as Won.");
+        if (Stage != DealStage.Prospect && Stage != DealStage.Proposal)
+            throw new InvalidOperationException("Only deals in Prospect or Proposal stages can be marked as Won.");
 
         if (ClosingDate == null)
             throw new InvalidOperationException("Closing date must be set before marking the deal as Won.");
@@ -50,7 +50,7 @@ public class Deal : IActivityObject
 
     public void LoseDeal(string reason)
     {
-        if (Stage != DealStage.Prospect)
+        if (Stage != DealStage.Prospect && Stage != DealStage.Proposal)
             throw new InvalidOperationException("Only deals in Prospect stage can be marked as Lost.");
 
         if (string.IsNullOrWhiteSpace(reason))
@@ -60,11 +60,29 @@ public class Deal : IActivityObject
         Stage = DealStage.Lost;
     }
 
+    public void MoveStage(DealStage newStage)
+    {
+        if (newStage == DealStage.Won || newStage == DealStage.Lost)
+            throw new InvalidOperationException("Use WinDeal or LoseDeal methods to change the deal to Won or Lost.");
+
+        if (newStage == Stage)
+            return; // No change
+
+        if (newStage == DealStage.NotInitiated)
+            throw new InvalidOperationException("Cannot move back to NotInitiated stage.");
+
+        if (newStage == DealStage.Prospect && Stage != DealStage.NotInitiated)
+            throw new InvalidOperationException("Can only move to Prospect from NotInitiated stage.");
+
+        Stage = newStage;
+    }
+
     public decimal GetClosingProbability()
     {
         return Stage switch
         {
-            DealStage.Proposal => 0.1m,
+            DealStage.Prospect => 0.1m,
+            DealStage.Proposal => 0.5m,
             DealStage.Lost => 0m,
             DealStage.Won => 1m,
             _ => 0m
