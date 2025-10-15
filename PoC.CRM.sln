@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoC.CRM.Application", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoC.CRM.Application.Tests", "tests\PoC.CRM.Application.Tests\PoC.CRM.Application.Tests.csproj", "{5DF6F80A-529A-4A97-B622-78B6B4032DC3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D20BA598-9E5E-42B0-97AC-39B0C0D001B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoC.CRM.Data", "src\Infrastructure\PoC.CRM.Data\PoC.CRM.Data.csproj", "{BA142574-8821-4830-AB5F-6EF4F5153DEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{5DF6F80A-529A-4A97-B622-78B6B4032DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DF6F80A-529A-4A97-B622-78B6B4032DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DF6F80A-529A-4A97-B622-78B6B4032DC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA142574-8821-4830-AB5F-6EF4F5153DEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA142574-8821-4830-AB5F-6EF4F5153DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA142574-8821-4830-AB5F-6EF4F5153DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA142574-8821-4830-AB5F-6EF4F5153DEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +56,6 @@ Global
 		{89EC955D-51A5-4FFB-A43F-7B3E660F6430} = {87798AA6-B9FD-4917-95FC-616F79B8A4A5}
 		{0EE0A2AA-0C8E-4AEC-827F-C82C23AD7E24} = {9ED82766-FC10-4C60-9299-A7C47CAF763D}
 		{5DF6F80A-529A-4A97-B622-78B6B4032DC3} = {87798AA6-B9FD-4917-95FC-616F79B8A4A5}
+		{BA142574-8821-4830-AB5F-6EF4F5153DEC} = {D20BA598-9E5E-42B0-97AC-39B0C0D001B6}
 	EndGlobalSection
 EndGlobal

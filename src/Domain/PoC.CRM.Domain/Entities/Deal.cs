@@ -11,8 +11,10 @@ public class Deal : IActivityObject
     public DealStage Stage { get; private set; }
     public DateTime? ClosingDate { get; private set; }
     public string? LostReason { get; private set; }
+    private DealCode Code { get; }
+    public string Name => Title;
 
-    public Deal(int id, string companyName, string title, decimal amount)
+    public Deal(int id, string companyName, string title, decimal amount, DateTime date = new DateTime(), int sequenceNumber = 0)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(companyName, nameof(companyName));
         ArgumentException.ThrowIfNullOrWhiteSpace(title, nameof(title));
@@ -22,7 +24,7 @@ public class Deal : IActivityObject
         CompanyName = companyName;
         Title = title;
         Amount = amount;
-
+        Code = new DealCode(date, sequenceNumber);
         Stage = DealStage.NotInitiated;
     }
 
@@ -87,5 +89,38 @@ public class Deal : IActivityObject
             DealStage.Won => 1m,
             _ => 0m
         };
+    }
+
+    public string GetCode() => Code.Value;
+
+    internal Deal(int id, string companyName, DealStage stage, string title, decimal amount, 
+     DealCode code, DateTime? closingDate, string lostReason){
+        Id = id;
+        CompanyName = companyName;
+        Stage = stage;
+        Title = title;
+        Amount = amount;
+        Code = code;
+        ClosingDate = closingDate;
+        LostReason = lostReason;
+     }
+}
+
+public class DealCode
+{
+    public string Value { get; }
+
+    public DealCode(DateTime date, int sequenceNumber)
+    {
+        Value = Generate(date, sequenceNumber);
+    }
+
+    private string Generate(DateTime date, int sequenceNumber)
+    {
+        return string.Format("{0:yyyy}{1:D8}", date, sequenceNumber);
+    }
+
+    internal DealCode(string value){
+        Value = value;
     }
 }

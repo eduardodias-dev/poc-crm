@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Application\PoC.CRM.Application\PoC.CRM.Application.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\PoC.CRM.Data\PoC.CRM.Data.csproj" />
   </ItemGroup>
 
 </Project>

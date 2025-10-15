@@ -119,4 +119,11 @@ public class DealTests
         deal.MoveStage(DealStage.Prospect);
         Assert.That(() => deal.LoseDeal(null!), Throws.ArgumentException.With.Message.EqualTo("Reason for losing the deal must be provided. (Parameter 'reason')"));
     }
+
+    [Test]
+    public void Deal_WhenCreatedWithDate_MustGenerateCode()
+    {
+        var deal = new Deal(1, "Valid Company", "Great Deal", 100m, new DateTime(2022, 1, 1), 1);
+        Assert.That(deal.GetCode(), Is.EqualTo("202200000001"));
+    }
 }

@@ -7,6 +7,7 @@ public class Contact : IActivityObject
     public int Id { get; }
     public string Email { get; }
     public string CompanyName { get; }
+    public string Name => Email;
     
     public Contact(int id, string email, string companyName, IContactValidator contactValidator)
     {

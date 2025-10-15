@@ -7,17 +7,18 @@ public class CreateDeal(ICompanyRepository companyRepository, IDealRepository de
 {
     public async Task<CreateDealOutput> Execute(CreateDealInput input)
     {
+        var sequenceNumber = await dealRepository.GetNextSequenceNumber();
         var company = await companyRepository.GetByName(input.CompanyName);
         if (company == null)
         {
             throw new ApplicationException("Company not found");
         }
 
-        var deal = new Deal(0, input.CompanyName, input.Title, input.Amount);
+        var deal = new Deal(default, input.CompanyName, input.Title, input.Amount, input.CreatedAt, sequenceNumber);
         deal.SetClosingDate(input.CloseDate);
         deal.MoveStage((DealStage)input.stageCode);
 
         await dealRepository.Add(deal);
-        return new CreateDealOutput(deal.Stage.ToString(), deal.GetClosingProbability(), deal.ClosingDate.GetValueOrDefault());
+        return new CreateDealOutput(deal.GetCode(), deal.Stage.ToString(), deal.GetClosingProbability(), deal.ClosingDate.GetValueOrDefault());
     } 
 }
